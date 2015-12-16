@@ -1,17 +1,5 @@
 name = NYS Global Navigation
 description = "Insert the global navigation into a site."
 core = 7.x
-version = 7.x-0.1.alpha
 
 package = NYS
-dependencies[] = respondjs
-
-files[] = nys_global_nav.module
-
-stylesheets[screen][] = global-nav-resources/css/nys-global-nav.css
-stylesheets[screen][] = global-nav-resources/css/nys-global-nav-fonts.css
-
-scripts[] = global-nav-resources/js/nys-global-nav-header.js
-
-
-configure = admin/config/content/nys_global_nav
