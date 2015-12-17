@@ -3,3 +3,4 @@ description = "Insert the global navigation into a site."
 core = 7.x
 
 package = NYS
+dependencies[] = libraries

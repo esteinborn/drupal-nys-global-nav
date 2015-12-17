@@ -18,6 +18,7 @@ function nys_global_nav_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('nys_global_nav_admin_settings'),
     'access arguments' => array('administer nys global nav'),
+    'type' => MENU_NORMAL_ITEM,
     'file' => 'nys_global_nav.admin.inc',
   );
   return $items;
@@ -70,27 +71,40 @@ function nys_global_nav_block_view($delta = '') {
  * Implements hook_page_build().
  *
  * Add uNav header and footer to the page_top and page_bottom regions
- * automatically if Drupal variable nys_global_nav_auto is TRUE.
+ * automatically if corresponding Drupal variable nys_global_nav_%_auto is TRUE.
  * But don't add uNav if on an administrative page.
  */
 function nys_global_nav_page_build(&$page) {
-  // Skip menu if not Auto or on administrative page.
-  if (!variable_get('nys_global_nav_auto', FALSE) || path_is_admin(current_path())) {
+  // Performance: Skip this entirely for AJAX requests or if on administrative
+  //   page.  AJAX code from admin_menu module, seemed like a good idea.
+  if ((strpos($_GET['q'], 'js/') === 0) || path_is_admin(current_path())) {
     return;
   }
-  // Performance: Skip this entirely for AJAX requests.
-  // Code from admin_menu module, seemed like a good idea.
-  if (strpos($_GET['q'], 'js/') === 0) {
-    return;
+  /*********************************************************************
+   * Debugging code to be removed
+   */
+  $resources_location = nys_global_nav_get_path('nys_global_nav') . '/source' ;
+  $test = drupal_get_path('module', 'color');
+  /***  End of Debugging Code  ***/
+  if (variable_get('nys_global_nav_header_auto', FALSE)) {
+    $page['page_top']['nys_global_nav'] = array(
+      '#weight' => -1000,
+      '#markup' => nys_global_nav_header(),
+      '#attached' => array(
+        'css' => array(
+          $resources_location . '/css/nys-brand/' . variable_get('nys_global_nav_agency_color', 'administration') . '.css',
+          $resources_location . '/css/nys-global-nav.css',
+          $resources_location . '/css/nys-global-nav-fonts.css',
+        ),
+      ),
+    );
   }
-  $page['page_top']['nys_global_nav'] = array(
-    '#weight' => -1000,
-    '#markup' => nys_global_nav_header(),
-  );
-  $page['page_bottom']['nys_global_nav'] = array(
-    '#weight' => 1000,
-    '#markup' => nys_global_nav_footer(),
-  );
+  if (variable_get('nys_global_nav_footer_auto', FALSE)) {
+    $page['page_bottom']['nys_global_nav'] = array(
+      '#weight' => 1000,
+      '#markup' => nys_global_nav_footer(),
+    );
+  }
 }
 
 /**
@@ -128,8 +142,9 @@ function nys_global_nav_help($path, $arg) {
  */
 function nys_global_nav_header() {
   $header = <<<'HEADER'
-<h2>Global Header Goes Here</h2>
+<h1 class="nys-global-header">Global Header Goes Here -- <?php print variable_get('nys_global_nav_agency_color', 'administration'); ?></h1>
 HEADER;
+  $header = '<h1 class="nys-global-header">Global Header Goes Here -- ' . variable_get('nys_global_nav_agency_color', 'administration') . '</h1>';
   return $header;
 }
 
@@ -139,7 +154,26 @@ HEADER;
  */
 function nys_global_nav_footer() {
   $footer = <<<'FOOTER'
-<h2>Global Footer Goes Here</h2>
+<h1>Global Footer Goes Here</h1>
 FOOTER;
   return $footer;
+}
+
+/**
+ * Helper function to get library paths.
+ */
+function nys_global_nav_get_path($library = 'nys_global_nav') {
+  $directory = '';
+  // Ensure the Libraries API module is installed.
+  if (module_exists('libraries') && function_exists('libraries_get_path')) {
+    $directory = libraries_get_path($library);
+  }
+  // Otherwise use the default directory.
+  elseif (file_exists('profiles/' . drupal_get_profile() . '/libraries/' . $library)) {
+    $directory = 'profiles/' . drupal_get_profile() . '/libraries/' . $library;
+  }
+  if (empty($directory)) {
+    $directory = 'sites/all/libraries/' . $library;
+  }
+  return $directory;
 }
