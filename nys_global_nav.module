@@ -144,7 +144,7 @@ function nys_global_nav_header() {
   $header = <<<'HEADER'
 <h1 class="nys-global-header">Global Header Goes Here -- <?php print variable_get('nys_global_nav_agency_color', 'administration'); ?></h1>
 HEADER;
-  $header = '<h1 class="nys-global-header">Global Header Goes Here -- ' . variable_get('nys_global_nav_agency_color', 'administration') . '</h1>';
+  $header = '<div  class="nys-global-header"><h1>Global Header Goes Here -- ' . variable_get('nys_global_nav_agency_color', 'administration') . '</h1></div>';
   return $header;
 }
 
