@@ -9,6 +9,21 @@
  */
 
 /**
+ * Implements hook_menu().
+ */
+function nys_global_nav_menu() {
+  $items['admin/config/user-interface/nys-global-nav'] = array(
+    'title' => 'NYS Global Navigation',
+    'description' => 'Configure NYS Global Navigation Header and Footer',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('nys_global_nav_admin_settings'),
+    'access arguments' => array('administer nys global nav'),
+    'file' => 'nys_global_nav.admin.inc',
+  );
+  return $items;
+}
+
+/**
  * Implements hook_block_info().
  */
 function nys_global_nav_block_info() {
