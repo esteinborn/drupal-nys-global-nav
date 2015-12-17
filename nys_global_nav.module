@@ -1,1 +1,130 @@
 <?php
+
+/**
+ * @file
+ * Integration module for NYS Global Navigation.
+ * Defines two blocks, NYS Global Navigation Header and NYS Global Navigation
+ *   Footer.  Can also be integrated directly into a theme.
+ * See:  https://github.com/ny/global-navigation
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function nys_global_nav_block_info() {
+  $blocks = array(
+    'nys_global_nav_header' => array(
+      // The name that will appear in the block list.
+      'info' => t('NYS uNav Header'),
+      // Disable caching in MVP.
+      'cache' => DRUPAL_NO_CACHE,
+    ),
+    'nys_global_nav_footer' => array(
+      // The name that will appear in the block list.
+      'info' => t('NYS uNav Footer'),
+      // Disable caching in MVP.
+      'cache' => DRUPAL_NO_CACHE,
+    ),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function nys_global_nav_block_view($delta = '') {
+  switch ($delta) {
+    case 'nys_global_nav_header':
+      // set block subject and content
+      $block['subject'] = t('NYS uNav Header');
+      $block['content'] = nys_global_nav_header();
+
+      return $block;
+      break;
+    case 'nys_global_nav_footer':
+      // set block subject and content
+      $block['subject'] = t('NYS uNav Footer');
+      $block['content'] = nys_global_nav_footer();
+
+      return $block;
+      break;
+  }
+}
+
+/**
+ * Implements hook_page_build().
+ *
+ * Add uNav header and footer to the page_top and page_bottom regions
+ * automatically if Drupal variable nys_global_nav_auto is TRUE.
+ * But don't add uNav if on an administrative page.
+ */
+function nys_global_nav_page_build(&$page) {
+  // Skip menu if not Auto or on administrative page.
+  if (!variable_get('nys_global_nav_auto', FALSE) || path_is_admin(current_path())) {
+    return;
+  }
+  // Performance: Skip this entirely for AJAX requests.
+  // Code from admin_menu module, seemed like a good idea.
+  if (strpos($_GET['q'], 'js/') === 0) {
+    return;
+  }
+  $page['page_top']['nys_global_nav'] = array(
+    '#weight' => -1000,
+    '#markup' => nys_global_nav_header(),
+  );
+  $page['page_bottom']['nys_global_nav'] = array(
+    '#weight' => 1000,
+    '#markup' => nys_global_nav_footer(),
+  );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function nys_global_nav_permission() {
+  return array(
+    'administer nys global nav' => array(
+      'title' => t('Administer NYS Global Navigation'),
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_help().
+ */
+function nys_global_nav_help($path, $arg) {
+  $output = '';
+  switch ($path) {
+    case 'admin/modules#description':
+      $output .= t('Integrate NYS Global Navigation onto your Drupal site.');
+      break;
+
+    case 'admin/config/user-interface/nys-global-nav':
+      // $output .= t('<p>Block-specific Superfish settings could be found at !link</p>', array('!link' => l(t('Blocks management'), 'admin/structure/block')));
+      break;
+  }
+  return $output;
+}
+
+/**
+ * Non-hook function to generate header block content.
+ * Returns raw html content suitable for printing in theme.
+ */
+function nys_global_nav_header() {
+  $header = <<<'HEADER'
+<h2>Global Header Goes Here</h2>
+HEADER;
+  return $header;
+}
+
+/**
+ * Non-hook function to generate footer block content.
+ * Returns raw html content suitable for printing in theme.
+ */
+function nys_global_nav_footer() {
+  $footer = <<<'FOOTER'
+<h2>Global Footer Goes Here</h2>
+FOOTER;
+  return $footer;
+}
