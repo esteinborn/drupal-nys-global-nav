@@ -10,15 +10,85 @@
  * NYS Global Navigation module settings form.
  */
 function nys_global_nav_admin_settings() {
-  $form['nys_global_nav_agency_color'] = _nys_global_nav_agency_color_field();
-  $form['nys_global_nav_header_menu'] = _nys_global_nav_header_menu_field();
+  $form['nys_global_nav_agency_fieldset'] = _nys_global_nav_agency_fieldset_field();
+  $form['nys_global_nav_agency_fieldset']['nys_global_nav_agency_name'] = _nys_global_nav_agency_name_field();
+  $form['nys_global_nav_agency_fieldset']['nys_global_nav_agency_color'] = _nys_global_nav_agency_color_field();
+  $form['nys_global_nav_header_fieldset'] = _nys_global_nav_header_fieldset_field();
+  $form['nys_global_nav_header_fieldset']['nys_global_nav_header_auto'] = _nys_global_nav_header_auto_field();
+  $form['nys_global_nav_header_fieldset']['nys_global_nav_header_format'] = _nys_global_nav_header_format_field();
+  $form['nys_global_nav_header_fieldset']['nys_global_nav_header_menu'] = _nys_global_nav_header_menu_field();
+  $form['nys_global_nav_footer_fieldset'] = _nys_global_nav_footer_fieldset_field();
+  $form['nys_global_nav_footer_fieldset']['nys_global_nav_footer_auto'] = _nys_global_nav_footer_auto_field();
   return system_settings_form($form);
 }
 
 /**
+ * NYS Global Navigation agency fieldset field.
+ *
+ * @return array
+ * Form API element for field.
+ */
+function _nys_global_nav_agency_fieldset_field() {
+  return array(
+    '#type' => 'fieldset',
+    '#title' => t('Agency navigation options'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  );
+}
+
+/**
+ * NYS Global Navigation header fieldset field.
+ *
+ * @return array
+ * Form API element for field.
+ */
+function _nys_global_nav_header_fieldset_field() {
+  return array(
+    '#type' => 'fieldset',
+    '#title' => t('Agency header options'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  );
+}
+
+/**
+ * NYS Global Navigation footer fieldset field.
+ *
+ * @return array
+ * Form API element for field.
+ */
+function _nys_global_nav_footer_fieldset_field() {
+  return array(
+    '#type' => 'fieldset',
+    '#title' => t('Agency footer options'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  );
+}
+
+/**
+ * NYS Global Navigation agency name field.
+ *
+ * @return array
+ * Form API element for field.
+ */
+function _nys_global_nav_agency_name_field(){
+  return array(
+    '#type' => 'textfield',
+    '#title' => t('Agency name'),
+    '#default_value' => variable_get('nys_global_nav_agency_name', ''),
+    '#maxlength' => 128,
+    '#size' => '60',
+    '#description' => t('Enter the agency name for the global navigation.  You can use &#60;br&#47;&#62; to cause the name to split.'),
+  );
+}
+
+/**
  * NYS Global Navigation agency grouping color field.
- * @return
- * Array with form API element for field.
+ *
+ * @return array
+ * Form API element for field.
  */
 function _nys_global_nav_agency_color_field(){
   $agency_groupings = array(
@@ -34,7 +104,7 @@ function _nys_global_nav_agency_color_field(){
   );
   return array(
     '#type' => 'select',
-    '#title' => t('Agency Grouping Color'),
+    '#title' => t('Agency grouping color'),
     '#options' => $agency_groupings,
     '#default_value' => variable_get('nys_global_nav_agency_color', ''),
     '#multiple' => FALSE,
@@ -43,10 +113,36 @@ function _nys_global_nav_agency_color_field(){
     '#description' => t('Select which agency grouping color to use for the global navigation header/footer.'),
   );
 }
+
 /**
- * NYS Global Navigation header menu selection field.
- * @return
- * Array with form API element for field.
+ * NYS Global Navigation agency grouping color field.
+ *
+ * @return array
+ * Form API element for field.
+ */
+function _nys_global_nav_header_format_field(){
+  $format_options = array(
+    'horizontal stacked' => 'Horizontal - stacked',
+    'horizontal unstacked' => 'Horizontal - unstacked',
+    'vertical stacked' => 'Vertical',
+  );
+  return array(
+    '#type' => 'select',
+    '#title' => t('Agency navigation header format'),
+    '#options' => $format_options,
+    '#default_value' => variable_get('nys_global_nav_header_format', ''),
+    '#multiple' => FALSE,
+    '#empty_option' => 'None',
+    '#empty_value' => '',
+    '#description' => t('Select which header format to use.'),
+  );
+}
+
+/**
+* NYS Global Navigation header menu selection field.
+ *
+ * @return array
+ * Form API element for field.
  */
 function _nys_global_nav_header_menu_field(){
   $menu_list = menu_get_menus(TRUE);
@@ -59,5 +155,37 @@ function _nys_global_nav_header_menu_field(){
     '#empty_option' => 'None',
     '#empty_value' => '',
     '#description' => t('Select which menu to use in the global header.  Depending on formatting option selected, the number of first level items might be limited.'),
+  );
+}
+
+/**
+ * NYS Global Navigation header automatic insertion field.
+ *
+ * @return array
+ * Form API element for field.
+ */
+function _nys_global_nav_header_auto_field(){
+  return array(
+    '#type' => 'checkbox',
+    '#title' => t('Global navigation header automatic insertion'),
+    '#default_value' => variable_get('nys_global_nav_header_auto', ''),
+    '#multiple' => FALSE,
+    '#description' => t('Select if the global header is to be automatically inserted into the page.  If not selected, make sure to use the NYS Global Navigation Header block'),
+  );
+}
+
+/**
+ * NYS Global Navigation footer automatic insertion field.
+ *
+ * @return array
+ * Form API element for field.
+ */
+function _nys_global_nav_footer_auto_field(){
+  return array(
+    '#type' => 'checkbox',
+    '#title' => t('Global navigation footer automatic insertion'),
+    '#default_value' => variable_get('nys_global_nav_footer_auto', ''),
+    '#multiple' => FALSE,
+    '#description' => t('Select if the global footer is to be automatically inserted into the page.  If not selected, make sure to use the NYS Global Navigation Footer block'),
   );
 }

@@ -11,11 +11,11 @@
  * @ingroup themeable
  */
 ?>
-<div class="nys-global-header horizontal stacked">
+<div class="nys-global-header <?php print variable_get('nys_global_nav_header_format', ''); ?>">
   <div class="nav-toggle">
     <a href="#" role="button" id="nys-menu-control">Navigation menu</a>
   </div>
-  <h1>Agency Name Goes Here -- <?php print variable_get('nys_global_nav_agency_color', '') ?></h1>
+  <h1><a href="/"><?php print filter_xss(variable_get('nys_global_nav_agency_name', ''), array('br')); ?></a></h1>
   <?php print theme('nys_global_nav_menu', array('menu_name' => $header_menu_name, 'id' => 'nys-global-nav',)); ?>
   <?php print ''; ?>
 </div>
