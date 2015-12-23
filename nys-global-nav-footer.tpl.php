@@ -2,7 +2,7 @@
 
 /**
  * @file
- * New York State Global Navigation Header.
+ * New York State Global Navigation Header iFrame embed code.
  * See https://github.com/ny/global-navigation for documentation.
  *
  * Variables:
@@ -11,4 +11,4 @@
  * @ingroup themeable
  */
 ?>
-<h1 class="nys-global-header">Global Header Goes Here -- <?php print variable_get('nys_global_nav_agency_color', 'administration') ?></h1>
+<h1>Global footer goes here</h1>
