@@ -56,14 +56,12 @@ function nys_global_nav_block_view($delta = '') {
       $block['content'] = nys_global_nav_header();
 
       return $block;
-      break;
     case 'nys_global_nav_footer':
       // set block subject and content
       $block['subject'] = t('NYS Global Navigation Footer');
       $block['content'] = nys_global_nav_footer();
 
       return $block;
-      break;
   }
 }
 
@@ -100,11 +98,30 @@ function nys_global_nav_theme() {
   return array(
     'nys_global_nav_header' => array(
         'template' => 'nys-global-nav-header',
-        'variables' => array(),
+        'variables' => array(
+          'header_menu_name' => NULL,
+        ),
     ),
     'nys_global_nav_footer' => array(
         'template' => 'nys-global-nav-footer',
         'variables' => array(),
+    ),
+    'nys_global_nav_menu' => array(
+      'variables' => array(
+        'menu_name' => NULL,
+     ),
+    ),
+    'nys_global_nav_menu_item' => array(
+      'variables' => array(
+        'element' => NULL,
+        'properties' => NULL,
+      ),
+    ),
+    'nys_global_nav_menu_item_link' => array(
+      'variables' => array(
+        'menu_item' => NULL,
+        'link_options' => NULL,
+      ),
     ),
   );
 }
@@ -161,14 +178,16 @@ function nys_global_nav_footer() {
 
 /**
  * Non-hook function to generate header block content.
- * @return
- * Array with render array element that defines the header.
+ *
+ * @return array
+ * Render array element that defines the header.
  * Includes the CSS and JS to be included on the page.
  */
 function _nys_global_nav_header() {
   $resources_location = nys_global_nav_get_path('nys_global_nav') . '/source' ;
   $header = array(
     '#weight' => -950,
+    '#header_menu_name' => variable_get('nys_global_nav_header_menu', ''),
     '#theme' => 'nys_global_nav_header',
     '#attached' => array(
       'css' => array(
@@ -186,8 +205,9 @@ function _nys_global_nav_header() {
 
 /**
  * Non-hook function to generate footer block content.
- * @return
- * Array with render array element that defines the footer.
+ *
+ * @return array
+ * Render array element that defines the footer.
  */
 function _nys_global_nav_footer() {
   $footer = array(
@@ -195,6 +215,42 @@ function _nys_global_nav_footer() {
     '#theme' => 'nys_global_nav_footer',
   );
   return $footer;
+}
+
+/**
+ * Theme function to allow any menu tree to be themed for the NYS Global Navigation.
+ * Code patterned/copied from drupal.org/project/superfish and adapted.
+ */
+function theme_nys_global_nav_menu($variables){
+  global $user, $language;
+
+  // $id = $variables['id'];
+  $menu_name = $variables['menu_name'];
+  // $mlid = $variables['mlid'];
+
+  $menu = menu_tree_all_data($menu_name);
+
+  if (function_exists('i18n_menu_localize_tree')) {
+    $menu = i18n_menu_localize_tree($menu);
+  }
+
+  return;
+}
+
+/**
+ * Theme a menu item link.
+ *
+ * @param $variables
+ *   An array of variables containing:
+ *    - menu_item: The menu item array.
+ *    - link_options: An array of link options.
+ *
+ * @ingroup themeable
+ */
+function theme_nys_global_nav_menu_item_link($variables) {
+  $menu_item = $variables['menu_item'];
+  $link_options = $variables['link_options'];
+  return l($menu_item['link']['title'], $menu_item['link']['href'], $link_options);
 }
 
 /**
