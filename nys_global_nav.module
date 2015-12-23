@@ -31,13 +31,13 @@ function nys_global_nav_block_info() {
   $blocks = array(
     'nys_global_nav_header' => array(
       // The name that will appear in the block list.
-      'info' => t('NYS uNav Header'),
+      'info' => t('NYS Global Navigation Header'),
       // Disable caching in MVP.
       'cache' => DRUPAL_NO_CACHE,
     ),
     'nys_global_nav_footer' => array(
       // The name that will appear in the block list.
-      'info' => t('NYS uNav Footer'),
+      'info' => t('NYS Global Navigation Footer'),
       // Disable caching in MVP.
       'cache' => DRUPAL_NO_CACHE,
     ),
@@ -52,14 +52,14 @@ function nys_global_nav_block_view($delta = '') {
   switch ($delta) {
     case 'nys_global_nav_header':
       // set block subject and content
-      $block['subject'] = t('NYS uNav Header');
+      $block['subject'] = t('NYS Global Navigation Header');
       $block['content'] = nys_global_nav_header();
 
       return $block;
       break;
     case 'nys_global_nav_footer':
       // set block subject and content
-      $block['subject'] = t('NYS uNav Footer');
+      $block['subject'] = t('NYS Global Navigation Footer');
       $block['content'] = nys_global_nav_footer();
 
       return $block;
@@ -83,29 +83,32 @@ function nys_global_nav_page_build(&$page) {
   /*********************************************************************
    * Debugging code to be removed
    */
-  $resources_location = nys_global_nav_get_path('nys_global_nav') . '/source' ;
   $test = drupal_get_path('module', 'color');
   /***  End of Debugging Code  ***/
   if (variable_get('nys_global_nav_header_auto', FALSE)) {
-    $page['page_top']['nys_global_nav'] = array(
-      '#weight' => -1000,
-      '#markup' => nys_global_nav_header(),
-      '#attached' => array(
-        'css' => array(
-          $resources_location . '/css/nys-brand/' . variable_get('nys_global_nav_agency_color', 'administration') . '.css',
-          $resources_location . '/css/nys-global-nav.css',
-          $resources_location . '/css/nys-global-nav-fonts.css',
-        ),
-      ),
-    );
+    $page['page_top']['nys_global_nav'] = _nys_global_nav_header(),
   }
   if (variable_get('nys_global_nav_footer_auto', FALSE)) {
-    $page['page_bottom']['nys_global_nav'] = array(
-      '#weight' => 1000,
-      '#markup' => nys_global_nav_footer(),
-    );
+    $page['page_bottom']['nys_global_nav'] = _nys_global_nav_footer(),
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function nys_global_nav_theme() {
+  return array(
+    'nnys_global_nav_header' => array(
+        'template' => 'nys-global-nav-header',
+        'variables' => array(),
+    ),
+    'nys_global_nav_footer' => array(
+        'template' => 'nys-global-nav-footer',
+        'variables' => array(),
+    ),
+  );
+}
+
 
 /**
  * Implements hook_permission().
@@ -141,10 +144,7 @@ function nys_global_nav_help($path, $arg) {
  * Returns raw html content suitable for printing in theme.
  */
 function nys_global_nav_header() {
-  $header = <<<'HEADER'
-<h1 class="nys-global-header">Global Header Goes Here -- <?php print variable_get('nys_global_nav_agency_color', 'administration'); ?></h1>
-HEADER;
-  $header = '<h1 class="nys-global-header">Global Header Goes Here -- ' . variable_get('nys_global_nav_agency_color', 'administration') . '</h1>';
+  $header = theme('nys-global-nav-header');
   return $header;
 }
 
@@ -153,9 +153,39 @@ HEADER;
  * Returns raw html content suitable for printing in theme.
  */
 function nys_global_nav_footer() {
-  $footer = <<<'FOOTER'
-<h1>Global Footer Goes Here</h1>
-FOOTER;
+  $footer = theme('nys-global-nav-footer');
+  return $footer;
+}
+
+/**
+ * Non-hook function to generate header block content.
+ * Returns render array element.
+ */
+function _nys_global_nav_header() {
+  $resources_location = nys_global_nav_get_path('nys_global_nav') . '/source' ;
+  $header = array(
+    '#weight' => -950,
+    '#theme' => nys-global-nav-header,
+    '#attached' => array(
+      'css' => array(
+          $resources_location . '/css/nys-brand/' . variable_get('nys_global_nav_agency_color', 'administration') . '.css',
+          $resources_location . '/css/nys-global-nav.css',
+          $resources_location . '/css/nys-global-nav-fonts.css',
+      ),
+    ),
+  );
+  return $header;
+}
+
+/**
+ * Non-hook function to generate footer block content.
+ * Returns render array element.
+ */
+function _nys_global_nav_footer() {
+  $footer = array(
+    '#weight' => 950,
+    '#theme' => nys-global-nav-footer,
+  );
   return $footer;
 }
 
