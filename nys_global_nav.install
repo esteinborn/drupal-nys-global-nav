@@ -45,4 +45,7 @@ function nys_global_nav_uninstall() {
   // Delete the variable2 to clean up.
   variable_del('nys_global_nav_header_auto');
   variable_del('nys_global_nav_footer_auto');
+  variable_del('nys_global_nav_agency_color');
+  variable_del('nys_global_nav_header_menu');
+//  variable_del('');
 }

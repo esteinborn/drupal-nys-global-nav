@@ -11,4 +11,8 @@
  * @ingroup themeable
  */
 ?>
+<div class="nys-global-footer">
+  <div class="footer-container">
 <h1>Global footer goes here</h1>
+  </div>
+</div>

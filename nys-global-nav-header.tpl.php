@@ -11,4 +11,9 @@
  * @ingroup themeable
  */
 ?>
-<h1 class="nys-global-header">Global Header Goes Here -- <?php print variable_get('nys_global_nav_agency_color', 'administration') ?></h1>
+<div class="nys-global-header horizontal stacked">
+  <div class="nav-toggle">
+    <a href="#" role="button" id="nys-menu-control">Navigation menu</a>
+  </div>
+  <h1>Global Header Goes Here -- <?php print variable_get('nys_global_nav_agency_color', 'administration') ?></h1>
+</div>
