@@ -109,6 +109,7 @@ function nys_global_nav_theme() {
     'nys_global_nav_menu' => array(
       'variables' => array(
         'menu_name' => NULL,
+        'id' => NULL,
      ),
     ),
     'nys_global_nav_menu_item' => array(
@@ -196,7 +197,7 @@ function _nys_global_nav_header() {
         $resources_location . '/css/nys-global-nav-fonts.css',
       ),
       'js' => array(
-        $resources_location . '/js/nys-global-nav-header.js',
+        $resources_location . '/js/drupal-nys-global-nav-header.js',
       )
     ),
   );
@@ -224,7 +225,7 @@ function _nys_global_nav_footer() {
 function theme_nys_global_nav_menu($variables){
   global $user, $language;
 
-  // $id = $variables['id'];
+  $id = $variables['id'];
   $menu_name = $variables['menu_name'];
   // $mlid = $variables['mlid'];
 
@@ -234,7 +235,43 @@ function theme_nys_global_nav_menu($variables){
     $menu = i18n_menu_localize_tree($menu);
   }
 
-  return;
+  $output = '';
+  $output .= '<ul id="' . $id . '">';
+  $output .= theme('nys_global_nav_menu_item', array('element' => $menu, ));
+  $output .= '</ul>';
+
+  return $output;
+}
+
+/**
+ * Theme a menu item.
+ *
+ * @param $variables
+ *   An array of variables containing:
+ *    - element: The menu item array.
+ *    - properties: An array of link options.
+ *
+ * @ingroup themeable
+ */
+function theme_nys_global_nav_menu_item($variables){
+  $element = $variables['element'];
+  $properties = $variables['properties'];
+  $output = '';
+
+  foreach ($element as $menu_item) {
+    if (isset($menu_item['link'])) {
+      $output .= '<li>';
+      $output .= theme('nys_global_nav_menu_item_link', array('menu_item' => $menu_item));
+      $output .= '</li>';
+    }
+    if (!empty($menu_item['below'])) {
+      $output .= '<ul>';
+      $output .= theme('nys_global_nav_menu_item', array('element' => $menu_item['below']));
+      $output .= '</ul>';
+    }
+  }
+
+  return $output;
 }
 
 /**
@@ -249,7 +286,7 @@ function theme_nys_global_nav_menu($variables){
  */
 function theme_nys_global_nav_menu_item_link($variables) {
   $menu_item = $variables['menu_item'];
-  $link_options = $variables['link_options'];
+  $link_options= (isset($variables['link_options'])) ? $variables['link_options'] : array();
   return l($menu_item['link']['title'], $menu_item['link']['href'], $link_options);
 }
 

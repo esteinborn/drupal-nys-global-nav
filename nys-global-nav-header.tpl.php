@@ -15,7 +15,7 @@
   <div class="nav-toggle">
     <a href="#" role="button" id="nys-menu-control">Navigation menu</a>
   </div>
-  <h1>Global Header Goes Here -- <?php print variable_get('nys_global_nav_agency_color', 'administration') ?></h1>
-  <?php theme('nys_global_nav_menu', array('menu_name' => $header_menu_name)); ?>
+  <h1>Agency Name Goes Here -- <?php print variable_get('nys_global_nav_agency_color', '') ?></h1>
+  <?php print theme('nys_global_nav_menu', array('menu_name' => $header_menu_name, 'id' => 'nys-global-nav',)); ?>
   <?php print ''; ?>
 </div>
