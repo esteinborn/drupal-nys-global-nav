@@ -3,7 +3,9 @@
 /**
  * @file
  * New York State Global Navigation module configuration page.
- * Functions that are only called on the admin pages.
+ *
+ * Functions that are only called on the admin pages.  Separating
+ * from .module file keeps them from being loaded with every page.
  */
 
 /**
@@ -26,7 +28,7 @@ function nys_global_nav_admin_settings() {
  * NYS Global Navigation agency fieldset field.
  *
  * @return array
- * Form API element for field.
+ *   Form API element for field.
  */
 function _nys_global_nav_agency_fieldset_field() {
   return array(
@@ -41,7 +43,7 @@ function _nys_global_nav_agency_fieldset_field() {
  * NYS Global Navigation header fieldset field.
  *
  * @return array
- * Form API element for field.
+ *   Form API element for field.
  */
 function _nys_global_nav_header_fieldset_field() {
   return array(
@@ -56,7 +58,7 @@ function _nys_global_nav_header_fieldset_field() {
  * NYS Global Navigation footer fieldset field.
  *
  * @return array
- * Form API element for field.
+ *   Form API element for field.
  */
 function _nys_global_nav_footer_fieldset_field() {
   return array(
@@ -71,9 +73,9 @@ function _nys_global_nav_footer_fieldset_field() {
  * NYS Global Navigation agency name field.
  *
  * @return array
- * Form API element for field.
+ *   Form API element for field.
  */
-function _nys_global_nav_agency_name_field(){
+function _nys_global_nav_agency_name_field() {
   return array(
     '#type' => 'textfield',
     '#title' => t('Agency name'),
@@ -88,9 +90,9 @@ function _nys_global_nav_agency_name_field(){
  * NYS Global Navigation agency grouping color field.
  *
  * @return array
- * Form API element for field.
+ *   Form API element for field.
  */
-function _nys_global_nav_agency_color_field(){
+function _nys_global_nav_agency_color_field() {
   $agency_groupings = array(
     'administration' => 'Administration',
     'business' => 'Business',
@@ -118,9 +120,9 @@ function _nys_global_nav_agency_color_field(){
  * NYS Global Navigation agency grouping color field.
  *
  * @return array
- * Form API element for field.
+ *   Form API element for field.
  */
-function _nys_global_nav_header_format_field(){
+function _nys_global_nav_header_format_field() {
   $format_options = array(
     'horizontal stacked' => 'Horizontal - stacked',
     'horizontal unstacked' => 'Horizontal - unstacked',
@@ -139,12 +141,12 @@ function _nys_global_nav_header_format_field(){
 }
 
 /**
-* NYS Global Navigation header menu selection field.
+ * NYS Global Navigation header menu selection field.
  *
  * @return array
- * Form API element for field.
+ *   Form API element for field.
  */
-function _nys_global_nav_header_menu_field(){
+function _nys_global_nav_header_menu_field() {
   $menu_list = menu_get_menus(TRUE);
   return array(
     '#type' => 'select',
@@ -162,9 +164,9 @@ function _nys_global_nav_header_menu_field(){
  * NYS Global Navigation header automatic insertion field.
  *
  * @return array
- * Form API element for field.
+ *   Form API element for field.
  */
-function _nys_global_nav_header_auto_field(){
+function _nys_global_nav_header_auto_field() {
   return array(
     '#type' => 'checkbox',
     '#title' => t('Global navigation header automatic insertion'),
@@ -178,9 +180,9 @@ function _nys_global_nav_header_auto_field(){
  * NYS Global Navigation footer automatic insertion field.
  *
  * @return array
- * Form API element for field.
+ *   Form API element for field.
  */
-function _nys_global_nav_footer_auto_field(){
+function _nys_global_nav_footer_auto_field() {
   return array(
     '#type' => 'checkbox',
     '#title' => t('Global navigation footer automatic insertion'),
