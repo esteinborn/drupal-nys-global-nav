@@ -262,12 +262,14 @@ function theme_nys_global_nav_menu_item($variables) {
     if (isset($menu_item['link'])) {
       $output .= '<li>';
       $output .= theme('nys_global_nav_menu_item_link', array('menu_item' => $menu_item));
-      $output .= '</li>';
     }
     if (!empty($menu_item['below'])) {
       $output .= '<ul>';
       $output .= theme('nys_global_nav_menu_item', array('element' => $menu_item['below']));
       $output .= '</ul>';
+    }
+    if (isset($menu_item['link'])) {
+      $output .= '</li>';
     }
   }
 
