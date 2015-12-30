@@ -215,7 +215,7 @@ function nys_global_nav_footer() {
 function _nys_global_nav_header() {
   $resources_location = nys_global_nav_get_path('nys_global_nav') . '/source';
   // Pass the directory of the library JavaScript to Drupal's JS.
-  drupal_add_js(array('nys_global_nav' => array('js_library' => $resources_location . '/js/nys-global-nav-header.js')), 'setting');
+  drupal_add_js(array('nys_global_nav' => array('js_library' => '/' . $resources_location . '/js/nys-global-nav-header.js')), 'setting');
   $header = array(
     '#weight' => -950,
     '#header_menu_name' => variable_get('nys_global_nav_header_menu', ''),
