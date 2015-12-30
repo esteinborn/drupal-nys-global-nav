@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @file
+ * Install file for NYS Global Navigation module.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * Add 2 Drupal variables, nys_global_nav_header_auto &
+ *   nys_global_nav_footer_auto, and default to TRUE.
+ * Set module weight to be 2nd highest so module's hook_page_build runs last.
+ */
+function nys_global_nav_install() {
+  // Add the variables and set it TRUE.
+  variable_set('nys_global_nav_header_auto', TRUE);
+  variable_set('nys_global_nav_footer_auto', TRUE);
+  // Find the maximum module weight of enabled modules.
+  if (module_exists('nys_unav')) {
+    // If uNav is enabled, assume it is highest weight module,
+    // but get second highest (uNav sets itself to +10).
+    $max_weight = db_query('SELECT weight FROM {system} WHERE name = :name', array(':name' => 'nys_unav'))->fetchField() - 10;
+  }
+  else {
+    // Otherwise find maximum weight.
+    $max_weight = db_query('SELECT MAX(weight) FROM {system} WHERE status = :status', array(':status' => 1))->fetchField();
+  }
+
+  // Set our module to 5 heavier, so ours moves lower in execution order.
+  db_update('system')
+    ->fields(array('weight' => $max_weight + 5))
+    ->condition('name', 'nys_global_nav', '=')
+    ->condition('type', 'module', '=')
+    ->execute();
+
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function nys_global_nav_uninstall() {
+  // Delete the variable2 to clean up.
+  variable_del('nys_global_nav_agency_name');
+  variable_del('nys_global_nav_agency_color');
+  variable_del('nys_global_nav_header_auto');
+  variable_del('nys_global_nav_header_menu');
+  variable_del('nys_global_nav_footer_auto');
+  variable_del('nys_global_nav_footer_menu');
+}
