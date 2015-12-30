@@ -22,6 +22,8 @@ function nys_global_nav_admin_settings() {
   $form['nys_global_nav_footer_fieldset'] = _nys_global_nav_footer_fieldset_field();
   $form['nys_global_nav_footer_fieldset']['nys_global_nav_footer_auto'] = _nys_global_nav_footer_auto_field();
   $form['nys_global_nav_footer_fieldset']['nys_global_nav_footer_menu'] = _nys_global_nav_footer_menu_field();
+  $form['nys_global_nav_footer_fieldset']['nys_global_nav_social_media_fieldset'] = _nys_global_nav_social_media_fieldset_field();
+  $form['nys_global_nav_footer_fieldset']['nys_global_nav_social_media_fieldset']['nys_global_nav_social_media'] = _nys_global_nav_social_media_field();
   return system_settings_form($form);
 }
 
@@ -67,6 +69,20 @@ function _nys_global_nav_footer_fieldset_field() {
     '#title' => t('Agency footer options'),
     '#collapsible' => FALSE,
     '#collapsed' => FALSE,
+  );
+}
+/**
+ * NYS Global Navigation social media fieldset field.
+ *
+ * @return array
+ *   Form API element for field.
+ */
+function _nys_global_nav_social_media_fieldset_field() {
+  return array(
+    '#type' => 'fieldset',
+    '#title' => t('Social media options'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
 }
 
@@ -213,4 +229,26 @@ function _nys_global_nav_footer_menu_field() {
   );
 }
 
+/**
+ * NYS Global Navigation social media fields.
+ *
+ * @return array
+ *   Form API element for field.
+ */
+function _nys_global_nav_social_media_field() {
+  $social_media_list = _nys_global_nav_setup_social_names();
+  $social_media_names = array();
+  foreach ($social_media_list as $key => $social_media_name) {
+    $social_media_index_name = 'nys_global_nav_social_media_' . check_plain($key);
+    $social_media_names[$social_media_index_name] = array(
+      '#type' => 'textfield',
+      '#title' => t('Global navigation @social URL', array('@social' => check_plain($social_media_name))),
+      '#default_value' => variable_get($social_media_index_name, ''),
+      '#maxlength' => 128,
+      '#size' => 60,
+      '#description' => t('Enter the URL for @social.  If left blank, the social media icon will not display.  If no social media icons display, the section will not display', array('@social' => check_plain($social_media_name))),
+    );
+  }
+  return $social_media_names;
+}
 

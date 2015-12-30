@@ -213,7 +213,7 @@ function nys_global_nav_footer() {
  *   Includes the CSS and JS to be included on the page.
  */
 function _nys_global_nav_header() {
-  $resources_location = nys_global_nav_get_path('nys_global_nav') . '/source';
+  $resources_location = _nys_global_nav_get_path('nys_global_nav') . '/source';
   // Pass the directory of the library JavaScript to Drupal's JS.
   drupal_add_js(array('nys_global_nav' => array('js_library' => '/' . $resources_location . '/js/nys-global-nav-header.js')), 'setting');
   $header = array(
@@ -323,7 +323,7 @@ function theme_nys_global_nav_menu_item_link($variables) {
 /**
  * Helper function to get library paths.
  */
-function nys_global_nav_get_path($library = 'nys_global_nav') {
+function _nys_global_nav_get_path($library = 'nys_global_nav') {
   $directory = '';
   // Ensure the Libraries API module is installed.
   if (module_exists('libraries') && function_exists('libraries_get_path')) {
@@ -337,4 +337,33 @@ function nys_global_nav_get_path($library = 'nys_global_nav') {
     $directory = 'sites/all/libraries/' . $library;
   }
   return $directory;
+}
+
+/**
+ * Helper function to set up social media names.
+ *
+ * @return array $social_media_names
+ */
+function _nys_global_nav_setup_social_names() {
+  return array(
+    'blogger' => 'Blogger',
+    'delicious' => 'Delicious',
+    'facebook' => 'Facebook',
+    'feed' => 'RSS Feed',
+    'flickr' => 'Flickr',
+    'foursquare' => 'Foursquare',
+    'github' => 'GitHub',
+    'google-plus' => 'Google+',
+    'instagram' => 'Instagram',
+    'linkedin' => 'Linkedin',
+    'mail' => 'Mail',
+    'pinterest' => 'Pinterest',
+    'reddit' => 'Reddit',
+    'share' => 'Share',
+    'tumblr' => 'Tumblr',
+    'twitter' => 'Twitter',
+    'vimeo' => 'Vimeo',
+    'yelp' => 'Yelp',
+    'youtube' => 'YouTube',
+  );
 }
