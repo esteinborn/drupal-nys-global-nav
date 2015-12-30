@@ -286,7 +286,7 @@ function theme_nys_global_nav_menu_item($variables) {
   $output = '';
 
   foreach ($element as $menu_item) {
-    if (isset($menu_item['link'])) {
+    if (isset($menu_item['link']) && !$menu_item['link']['hidden'] && $menu_item['link']['access']) {
       $output .= '<li>';
       $output .= theme('nys_global_nav_menu_item_link', array('menu_item' => $menu_item));
     }
@@ -295,7 +295,7 @@ function theme_nys_global_nav_menu_item($variables) {
       $output .= theme('nys_global_nav_menu_item', array('element' => $menu_item['below']));
       $output .= '</ul>';
     }
-    if (isset($menu_item['link'])) {
+    if (isset($menu_item['link']) && !$menu_item['link']['hidden'] && $menu_item['link']['access']) {
       $output .= '</li>';
     }
   }
