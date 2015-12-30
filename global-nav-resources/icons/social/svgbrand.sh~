@@ -1,7 +1,0 @@
-#!/bin/bash
-
-for groups in $(ls | grep nys); 
-  do 
-    echo $groups | cut -c 1-6;
-    echo $groups | cut -c 7-100;
-  done
