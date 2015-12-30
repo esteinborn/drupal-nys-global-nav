@@ -159,6 +159,31 @@ function nys_global_nav_help($path, $arg) {
 }
 
 /**
+ * Implements hook_libraries_info().
+ */
+function nys_global_nav_libraries_info() {
+  $libraries['nys_global_nav'] = array(
+    // Only used in administrative UI of Libraries API.
+    'name' => 'New York State Global Navigation library',
+    'vendor url' => 'http://its.ny.gov/webny',
+    'download url' => 'https://github.com/ny/global-navigation',
+    'path' => 'source',
+    'files' => array(
+      // 'js' and 'css' follow the syntax of hook_library(), but file paths are
+      // relative to the library path.
+      'js' => array(
+        'nys-global-nav-header.js',
+      ),
+      'css' => array(
+        'nys-global-nav.css',
+        'nys-global-nav-fonts.css',
+      ),
+    ),
+  );
+  return $libraries;
+}
+
+/**
  * Non-hook function to generate header block content.
  *
  * @return string

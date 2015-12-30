@@ -41,10 +41,10 @@ function nys_global_nav_install() {
  */
 function nys_global_nav_uninstall() {
   // Delete the variable2 to clean up.
-  variable_del('nys_global_nav_header_auto');
-  variable_del('nys_global_nav_footer_auto');
-  variable_del('nys_global_nav_agency_color');
-  variable_del('nys_global_nav_header_menu');
   variable_del('nys_global_nav_agency_name');
-  variable_del('nys_global_nav_header_format');
+  variable_del('nys_global_nav_agency_color');
+  variable_del('nys_global_nav_header_auto');
+  variable_del('nys_global_nav_header_menu');
+  variable_del('nys_global_nav_footer_auto');
+  variable_del('nys_global_nav_footer_menu');
 }

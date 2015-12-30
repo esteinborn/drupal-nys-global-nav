@@ -21,6 +21,7 @@ function nys_global_nav_admin_settings() {
   $form['nys_global_nav_header_fieldset']['nys_global_nav_header_menu'] = _nys_global_nav_header_menu_field();
   $form['nys_global_nav_footer_fieldset'] = _nys_global_nav_footer_fieldset_field();
   $form['nys_global_nav_footer_fieldset']['nys_global_nav_footer_auto'] = _nys_global_nav_footer_auto_field();
+  $form['nys_global_nav_footer_fieldset']['nys_global_nav_footer_menu'] = _nys_global_nav_footer_menu_field();
   return system_settings_form($form);
 }
 
@@ -156,7 +157,7 @@ function _nys_global_nav_header_menu_field() {
     '#multiple' => FALSE,
     '#empty_option' => 'None',
     '#empty_value' => '',
-    '#description' => t('Select which menu to use in the global header.  Depending on formatting option selected, the number of first level items might be limited.'),
+    '#description' => t('Select which menu to use in the global header.  If the menu has more than 7 first level item, all are output which might cause formatting issues.'),
   );
 }
 
@@ -191,3 +192,25 @@ function _nys_global_nav_footer_auto_field() {
     '#description' => t('Select if the global footer is to be automatically inserted into the page.  If not selected, make sure to use the NYS Global Navigation Footer block'),
   );
 }
+
+/**
+ * NYS Global Navigation footer menu selection field.
+ *
+ * @return array
+ *   Form API element for field.
+ */
+function _nys_global_nav_footer_menu_field() {
+  $menu_list = menu_get_menus(TRUE);
+  return array(
+    '#type' => 'select',
+    '#title' => t('Global navigation footer menu'),
+    '#options' => $menu_list,
+    '#default_value' => variable_get('nys_global_nav_footer_menu', ''),
+    '#multiple' => FALSE,
+    '#empty_option' => 'None',
+    '#empty_value' => '',
+    '#description' => t('Select which menu to use in the global footer.  The first level menu items will be the column headers.  If the menu has more than 5 first level item, all are output which might cause formatting issues.'),
+  );
+}
+
+
