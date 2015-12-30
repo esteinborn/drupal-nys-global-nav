@@ -258,7 +258,7 @@ function theme_nys_global_nav_menu($variables) {
   $id = $variables['id'];
   $menu_name = $variables['menu_name'];
 
-  $menu = menu_tree_all_data($menu_name);
+  $menu = menu_tree_all_data($menu_name, NULL, 2);
 
   if (function_exists('i18n_menu_localize_tree')) {
     $menu = i18n_menu_localize_tree($menu);
