@@ -29,20 +29,25 @@ function nys_global_nav_menu() {
  * Implements hook_block_info().
  */
 function nys_global_nav_block_info() {
-  $blocks = array(
-    'nys_global_nav_header' => array(
+  $blocks = array();
+  // If automatic insertion is enabled, don't show header block.
+  if (!variable_get('nys_global_nav_header_auto', FALSE)) {
+    $blocks['nys_global_nav_header'] = array(
       // The name that will appear in the block list.
       'info' => t('NYS Global Navigation Header'),
       // Disable caching in MVP.
       'cache' => DRUPAL_NO_CACHE,
-    ),
-    'nys_global_nav_footer' => array(
+    );
+  }
+  // If automatic insertion is enabled, don't show footer block.
+  if (!variable_get('nys_global_nav_footer_auto', FALSE)) {
+    $blocks['nys_global_nav_footer'] = array(
       // The name that will appear in the block list.
       'info' => t('NYS Global Navigation Footer'),
       // Disable caching in MVP.
       'cache' => DRUPAL_NO_CACHE,
-    ),
-  );
+    );
+  }
   return $blocks;
 }
 
@@ -52,16 +57,22 @@ function nys_global_nav_block_info() {
 function nys_global_nav_block_view($delta = '') {
   switch ($delta) {
     case 'nys_global_nav_header':
-      // Set block subject and content.
-      $block['subject'] = t('NYS Global Navigation Header');
-      $block['content'] = nys_global_nav_header();
-      return $block;
+      // If automatic insertion is enabled, don't show header block.
+      if (!variable_get('nys_global_nav_header_auto', FALSE)) {
+        // Set block subject and content.
+        $block['subject'] = t('NYS Global Navigation Header');
+        $block['content'] = nys_global_nav_header();
+        return $block;
+      }
 
     case 'nys_global_nav_footer':
-      // Set block subject and content.
-      $block['subject'] = t('NYS Global Navigation Footer');
-      $block['content'] = nys_global_nav_footer();
-      return $block;
+      // If automatic insertion is enabled, don't show footer block.
+      if (!variable_get('nys_global_nav_footer_auto', FALSE)) {
+        // Set block subject and content.
+        $block['subject'] = t('NYS Global Navigation Footer');
+        $block['content'] = nys_global_nav_footer();
+        return $block;
+      }
 
   }
 }
@@ -430,10 +441,6 @@ function theme_nys_global_nav_footer_social_media_urls($variables) {
 
   $social_media_urls = $variables['social_media_urls'];
 
-  if (empty($social_media_urls)) {
-    return '';
-  }
-
   $output = '';
 
   foreach ($social_media_urls as $social_media_index => $social_media_url) {
@@ -454,11 +461,11 @@ function theme_nys_global_nav_footer_social_media_urls($variables) {
  */
 function theme_nys_global_nav_footer_social_media_url($variables) {
 
-  $social_media_urls = $variables['social_media_urls'];
-  $social_media_id = key($social_media_urls);
+  $social_media_url = $variables['social_media_url'];
+  $social_media_id = key($social_media_url);
 
   $output = '';
-  $output .= '<li><a href="' . $social_media_urls[$social_media_id] . '"><span class=""icon-social-' . $social_media_id . '"></span><span>' . strtoupper($social_media_id) . '</span></a></li>';
+  $output .= '<li><a href="' . $social_media_url[$social_media_id] . '"><span class="icon-social-' . $social_media_id . '"></span><span>' . strtoupper($social_media_id) . '</span></a></li>';
   return $output;
 }
 
@@ -519,8 +526,8 @@ function _nys_global_nav_social_media_urls() {
   $social_media_list = _nys_global_nav_setup_social_names();
   $social_media_urls = array();
   foreach ($social_media_list as $key => $social_media_name) {
-    $social_media_index_name = 'nys_global_nav_social_media_' . check_plain($key);
-    $social_media_url = variable_get($social_media_index_name, '');
+    $social_media_index_name = check_plain($key);
+    $social_media_url = variable_get('nys_global_nav_social_media_' . $social_media_index_name, '');
     if (!empty($social_media_url)) {
       $social_media_urls[$social_media_index_name] = $social_media_url;
     };

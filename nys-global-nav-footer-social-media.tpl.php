@@ -12,4 +12,17 @@
  * @ingroup themeable
  */
 ?>
-<?php print 'Social Media'; ?>
+<div class="social-media">
+  <div class="social-media-title">
+    <h4>CONNECT WITH US</h4>
+  </div>
+  <div class="social-media-links">
+    <ul>
+    <?php print theme('nys_global_nav_footer_social_media_urls', array(
+        'social_media_urls' => $social_media_urls,
+      )
+    );
+    ?>
+    </ul>
+  </div>
+</div>
