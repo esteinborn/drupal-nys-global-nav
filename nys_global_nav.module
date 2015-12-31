@@ -105,21 +105,40 @@ function nys_global_nav_theme() {
     ),
     'nys_global_nav_footer' => array(
       'template' => 'nys-global-nav-footer',
-      'variables' => array(),
+      'variables' => array(
+        'footer_menu_name' => NULL,
+        'social_media_urls' => array(),
+      ),
     ),
-    'nys_global_nav_menu' => array(
+    'nys_global_nav_footer_social_media' => array(
+      'template' => 'nys-global-nav-footer-social-media',
+      'variables' => array(
+        'social_media_urls' => array(),
+      ),
+    ),
+    'nys_global_nav_footer_social_media_urls' => array(
+      'variables' => array(
+        'social_media_urls' => array(),
+      ),
+    ),
+    'nys_global_nav_footer_social_media_url' => array(
+      'variables' => array(
+        'social_media_url' => array(),
+      ),
+    ),
+    'nys_global_nav_header_menu' => array(
       'variables' => array(
         'menu_name' => NULL,
         'id' => NULL,
       ),
     ),
-    'nys_global_nav_menu_item' => array(
+    'nys_global_nav_header_menu_item' => array(
       'variables' => array(
         'element' => NULL,
         'properties' => NULL,
       ),
     ),
-    'nys_global_nav_menu_item_link' => array(
+    'nys_global_nav_header_menu_item_link' => array(
       'variables' => array(
         'menu_item' => NULL,
         'link_options' => NULL,
@@ -243,17 +262,23 @@ function _nys_global_nav_header() {
 function _nys_global_nav_footer() {
   $footer = array(
     '#weight' => 950,
+    '#footer_menu_name' => variable_get('nys_global_nav_footer_menu', ''),
+    '#social_media_urls' => _nys_global_nav_social_media_urls(),
     '#theme' => 'nys_global_nav_footer',
+    'social_media' => array(
+      '#theme' => 'nys_global_nav_footer_social_media',
+      '#social_media_urls' => _nys_global_nav_social_media_urls(),
+    )
   );
   return $footer;
 }
 
 /**
- * Theme function for any menu tree to be themed for NYS Global Navigation.
+ * Theme function menu tree to be themed for NYS Global Navigation header.
  *
  * Code patterned/copied from drupal.org/project/superfish and adapted.
  */
-function theme_nys_global_nav_menu($variables) {
+function theme_nys_global_nav_header_menu($variables) {
 
   $id = $variables['id'];
   $menu_name = $variables['menu_name'];
@@ -266,14 +291,14 @@ function theme_nys_global_nav_menu($variables) {
 
   $output = '';
   $output .= '<ul id="' . $id . '">';
-  $output .= theme('nys_global_nav_menu_item', array('element' => $menu));
+  $output .= theme('nys_global_nav_header_menu_item', array('element' => $menu));
   $output .= '</ul>';
 
   return $output;
 }
 
 /**
- * Theme a menu item.
+ * Theme a header menu item.
  *
  * @param array $variables
  *   An array of variables containing:
@@ -281,18 +306,18 @@ function theme_nys_global_nav_menu($variables) {
  *
  * @ingroup themeable
  */
-function theme_nys_global_nav_menu_item($variables) {
+function theme_nys_global_nav_header_menu_item($variables) {
   $element = $variables['element'];
   $output = '';
 
   foreach ($element as $menu_item) {
     if (isset($menu_item['link']) && !$menu_item['link']['hidden'] && $menu_item['link']['access']) {
       $output .= '<li>';
-      $output .= theme('nys_global_nav_menu_item_link', array('menu_item' => $menu_item));
+      $output .= theme('nys_global_nav_header_menu_item_link', array('menu_item' => $menu_item));
     }
     if (!empty($menu_item['below'])) {
       $output .= '<ul>';
-      $output .= theme('nys_global_nav_menu_item', array('element' => $menu_item['below']));
+      $output .= theme('nys_global_nav_header_menu_item', array('element' => $menu_item['below']));
       $output .= '</ul>';
     }
     if (isset($menu_item['link']) && !$menu_item['link']['hidden'] && $menu_item['link']['access']) {
@@ -304,7 +329,7 @@ function theme_nys_global_nav_menu_item($variables) {
 }
 
 /**
- * Theme a menu item link.
+ * Theme a header menu item link.
  *
  * @param array $variables
  *   An array of variables containing:
@@ -313,11 +338,128 @@ function theme_nys_global_nav_menu_item($variables) {
  *
  * @ingroup themeable
  */
-function theme_nys_global_nav_menu_item_link($variables) {
+function theme_nys_global_nav_header_menu_item_link($variables) {
   $menu_item = $variables['menu_item'];
   $link_options = (isset($variables['link_options'])) ? $variables['link_options'] : array();
   $nav_link = (($menu_item['link']['href'] != '<nolink>') ? l($menu_item['link']['title'], $menu_item['link']['href'], $link_options) : ('<a href="#">' . $menu_item['link']['title'] . '</a>'));
   return $nav_link;
+}
+
+/**
+ * Theme function menu tree to be themed for NYS Global Navigation footer.
+ *
+ * Code patterned/copied from drupal.org/project/superfish and adapted.
+ */
+function theme_nys_global_nav_footer_menu($variables) {
+
+  $id = $variables['id'];
+  $menu_name = $variables['menu_name'];
+
+  $menu = menu_tree_all_data($menu_name, NULL, 2);
+
+  if (function_exists('i18n_menu_localize_tree')) {
+    $menu = i18n_menu_localize_tree($menu);
+  }
+
+  $output = '';
+  $output .= '<ul id="' . $id . '">';
+  $output .= theme('nys_global_nav_footer_menu_item', array('element' => $menu));
+  $output .= '</ul>';
+
+  return $output;
+}
+
+/**
+ * Theme a footer menu item.
+ *
+ * @param array $variables
+ *   An array of variables containing:
+ *    - element: The menu item array.
+ *
+ * @ingroup themeable
+ */
+function theme_nys_global_nav_footer_menu_item($variables) {
+  $element = $variables['element'];
+  $output = '';
+
+  foreach ($element as $menu_item) {
+    if (isset($menu_item['link']) && !$menu_item['link']['hidden'] && $menu_item['link']['access']) {
+      $output .= '<li>';
+      $output .= theme('nys_global_nav_footer_menu_item_link', array('menu_item' => $menu_item));
+    }
+    if (!empty($menu_item['below'])) {
+      $output .= '<ul>';
+      $output .= theme('nys_global_nav_footer_menu_item', array('element' => $menu_item['below']));
+      $output .= '</ul>';
+    }
+    if (isset($menu_item['link']) && !$menu_item['link']['hidden'] && $menu_item['link']['access']) {
+      $output .= '</li>';
+    }
+  }
+
+  return $output;
+}
+
+/**
+ * Theme a footer menu item link.
+ *
+ * @param array $variables
+ *   An array of variables containing:
+ *    - menu_item: The menu item array.
+ *    - link_options: An array of link options.
+ *
+ * @ingroup themeable
+ */
+function theme_nys_global_nav_footer_menu_item_link($variables) {
+  $menu_item = $variables['menu_item'];
+  $link_options = (isset($variables['link_options'])) ? $variables['link_options'] : array();
+  $nav_link = (($menu_item['link']['href'] != '<nolink>') ? l($menu_item['link']['title'], $menu_item['link']['href'], $link_options) : ('<a href="#">' . $menu_item['link']['title'] . '</a>'));
+  return $nav_link;
+}
+
+/**
+ * Theme function social media URLs to be themed for NYS Global Navigation.
+ *
+ * @param array $variables
+ *   An array of variables containing:
+ *    - social_media_urls: array of social media urls.
+ *
+ * @ingroup themeable
+ */
+function theme_nys_global_nav_footer_social_media_urls($variables) {
+
+  $social_media_urls = $variables['social_media_urls'];
+
+  if (empty($social_media_urls)) {
+    return '';
+  }
+
+  $output = '';
+
+  foreach ($social_media_urls as $social_media_index => $social_media_url) {
+    $output .= theme('nys_global_nav_footer_social_media_url', array('social_media_url' => array($social_media_index => $social_media_url)));
+  }
+
+  return $output;
+}
+
+/**
+ * Theme function to theme a single social media URL for NYS Global Navigation.
+ *
+ * @param array $variables
+ *   An array of variables containing:
+ *    - social_media_url: array with social media url.
+ *
+ * @ingroup themeable
+ */
+function theme_nys_global_nav_footer_social_media_url($variables) {
+
+  $social_media_urls = $variables['social_media_urls'];
+  $social_media_id = key($social_media_urls);
+
+  $output = '';
+  $output .= '<li><a href="' . $social_media_urls[$social_media_id] . '"><span class=""icon-social-' . $social_media_id . '"></span><span>' . strtoupper($social_media_id) . '</span></a></li>';
+  return $output;
 }
 
 /**
@@ -366,4 +508,22 @@ function _nys_global_nav_setup_social_names() {
     'yelp' => 'Yelp',
     'youtube' => 'YouTube',
   );
+}
+
+/**
+ * Helper function to get social media URLs that are not empty.
+ *
+ * @return array $social_media_names
+ */
+function _nys_global_nav_social_media_urls() {
+  $social_media_list = _nys_global_nav_setup_social_names();
+  $social_media_urls = array();
+  foreach ($social_media_list as $key => $social_media_name) {
+    $social_media_index_name = 'nys_global_nav_social_media_' . check_plain($key);
+    $social_media_url = variable_get($social_media_index_name, '');
+    if (!empty($social_media_url)) {
+      $social_media_urls[$social_media_index_name] = $social_media_url;
+    };
+  }
+  return $social_media_urls;
 }

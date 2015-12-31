@@ -242,7 +242,7 @@ function _nys_global_nav_social_media_field() {
     $social_media_index_name = 'nys_global_nav_social_media_' . check_plain($key);
     $social_media_names[$social_media_index_name] = array(
       '#type' => 'textfield',
-      '#title' => t('Global navigation @social URL', array('@social' => check_plain($social_media_name))),
+      '#title' => t('@social URL', array('@social' => check_plain($social_media_name))),
       '#default_value' => variable_get($social_media_index_name, ''),
       '#maxlength' => 128,
       '#size' => 60,

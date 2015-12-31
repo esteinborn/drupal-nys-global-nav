@@ -12,8 +12,24 @@
  * @ingroup themeable
  */
 ?>
+<?php print 'Footer'; ?>
 <div class="nys-global-footer">
   <div class="footer-container">
-<h1>Global footer goes here</h1>
-  </div>
+    <h3><?php print filter_xss(variable_get('nys_global_nav_agency_name', ''), array('br')); ?></h3>
+    <?php print theme('nys_global_nav_footer_menu', array(
+        'menu_name' => $footer_menu_name,
+        'id' => 'nys-global-nav',
+        )
+      );
+    ?>
+    <?php
+      // $social_media_urls = _nys_global_nav_social_media_urls();
+      if (!empty($social_media_urls)) {
+        print theme('nys_global_nav_footer_social_media', array(
+            'social_media_urls' => $social_media_urls,
+          )
+        );
+      }
+    ?>
+    <?php print ''; ?>  </div>
 </div>
