@@ -13,7 +13,7 @@
  */
 ?>
 <div class="nys-global-footer">
-  <div class="footer-container">
+  <div class="footer-container nys-global-footer-cols-<?php print _nys_global_nav_menu_count_top(variable_get('nys_global_nav_footer_menu', '')); ?>">
     <h3><?php print filter_xss(variable_get('nys_global_nav_agency_name', ''), array('br')); ?></h3>
     <?php print theme('nys_global_nav_footer_menu', array(
         'menu_name' => $footer_menu_name,

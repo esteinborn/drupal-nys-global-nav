@@ -494,6 +494,22 @@ function theme_nys_global_nav_footer_social_media_url($variables) {
 }
 
 /**
+ * Helper function to count number of top level menu items
+ *
+ * @param string $menu_name.
+ *   The name of the menu.
+ *
+ * @return integer $count.
+ *   Number of 1st level items in the menu.
+ */
+function _nys_global_nav_menu_count_top($menu_name = '') {
+
+  $menu = menu_tree_all_data($menu_name, NULL, 2);
+  return count($menu);
+
+}
+
+/**
  * Helper function to get library paths.
  */
 function _nys_global_nav_get_path($library = 'nys_global_nav') {

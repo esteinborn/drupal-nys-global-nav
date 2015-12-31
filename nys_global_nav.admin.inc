@@ -28,6 +28,25 @@ function nys_global_nav_admin_settings() {
 }
 
 /**
+ * NYS Global Navigation configuration form validation.
+ */
+function nys_global_nav_admin_settings_validate($form, &$form_state) {
+
+  $footer_menu_top_count = _nys_global_nav_menu_count_top($form_state['values']['nys_global_nav_footer_menu']);
+  if (($footer_menu_top_count <= 1) ||($footer_menu_top_count >= 5) ) {
+    // form_set_error('nys_global_nav_footer_menu', t('The footer menu should have between 1 and 5 top level menu items.'));
+    drupal_set_message('The footer menu should have between 1 and 5 top level menu items.  Your menu has ' . $footer_menu_top_count . '.', 'warning');
+  }
+
+  $header_menu_top_count = _nys_global_nav_menu_count_top($form_state['values']['nys_global_nav_header_menu']);
+  if (($header_menu_top_count <= 1) ||($header_menu_top_count >= 5) ) {
+    // form_set_error('nys_global_nav_header_menu', t('The header menu should have between 1 and 5 top level menu items.'));
+    drupal_set_message('The header menu should have between 1 and 5 top level menu items.  Your menu has ' . $header_menu_top_count . '.', 'warning');
+  }
+
+}
+
+/**
  * NYS Global Navigation agency fieldset field.
  *
  * @return array
