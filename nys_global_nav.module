@@ -155,6 +155,24 @@ function nys_global_nav_theme() {
         'link_options' => NULL,
       ),
     ),
+    'nys_global_nav_footer_menu' => array(
+      'variables' => array(
+        'menu_name' => NULL,
+        'id' => NULL,
+      ),
+    ),
+    'nys_global_nav_footer_menu_column' => array(
+      'variables' => array(
+        'element' => NULL,
+        'properties' => NULL,
+      ),
+    ),
+    'nys_global_nav_footer_menu_item_link' => array(
+      'variables' => array(
+        'menu_item' => NULL,
+        'link_options' => NULL,
+      ),
+    ),
   );
 }
 
@@ -373,15 +391,28 @@ function theme_nys_global_nav_footer_menu($variables) {
   }
 
   $output = '';
-  $output .= '<ul id="' . $id . '">';
-  $output .= theme('nys_global_nav_footer_menu_item', array('element' => $menu));
-  $output .= '</ul>';
+
+  foreach ($menu as $menu_item) {
+    if (isset($menu_item['link']) && !$menu_item['link']['hidden'] && $menu_item['link']['access']) {
+      $output .= '<div class="footer-col"><h4>';
+      $output .= theme('nys_global_nav_footer_menu_item_link', array('menu_item' => $menu_item));
+      $output .= '</h4>';
+    }
+    if (!empty($menu_item['below'])) {
+      $output .= '<ul>';
+      $output .= theme('nys_global_nav_footer_menu_column', array('element' => $menu_item['below']));
+      $output .= '</ul>';
+    }
+    if (isset($menu_item['link']) && !$menu_item['link']['hidden'] && $menu_item['link']['access']) {
+      $output .= '</div>';
+    }
+  }
 
   return $output;
 }
 
 /**
- * Theme a footer menu item.
+ * Theme a footer menu column.
  *
  * @param array $variables
  *   An array of variables containing:
@@ -389,7 +420,7 @@ function theme_nys_global_nav_footer_menu($variables) {
  *
  * @ingroup themeable
  */
-function theme_nys_global_nav_footer_menu_item($variables) {
+function theme_nys_global_nav_footer_menu_column($variables) {
   $element = $variables['element'];
   $output = '';
 
@@ -397,13 +428,6 @@ function theme_nys_global_nav_footer_menu_item($variables) {
     if (isset($menu_item['link']) && !$menu_item['link']['hidden'] && $menu_item['link']['access']) {
       $output .= '<li>';
       $output .= theme('nys_global_nav_footer_menu_item_link', array('menu_item' => $menu_item));
-    }
-    if (!empty($menu_item['below'])) {
-      $output .= '<ul>';
-      $output .= theme('nys_global_nav_footer_menu_item', array('element' => $menu_item['below']));
-      $output .= '</ul>';
-    }
-    if (isset($menu_item['link']) && !$menu_item['link']['hidden'] && $menu_item['link']['access']) {
       $output .= '</li>';
     }
   }

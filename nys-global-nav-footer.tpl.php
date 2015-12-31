@@ -12,13 +12,12 @@
  * @ingroup themeable
  */
 ?>
-<?php print 'Footer'; ?>
 <div class="nys-global-footer">
   <div class="footer-container">
     <h3><?php print filter_xss(variable_get('nys_global_nav_agency_name', ''), array('br')); ?></h3>
     <?php print theme('nys_global_nav_footer_menu', array(
         'menu_name' => $footer_menu_name,
-        'id' => 'nys-global-nav',
+        'id' => 'nys-global-nav-footer',
         )
       );
     ?>
