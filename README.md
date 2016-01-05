@@ -30,3 +30,10 @@ All state of New York websites are required to have the Global Navigation
   outside of any page HTML.  This is usually preferred for the horizontal
   agency navigation header format.  For the vertical agency navigation format
   you should disable the automatic insertion of  
+
+## Notes for later ##
+If you have Universal Navigation implemented via blocks placed through the
+user interface, you probably shouldn't use the automatic insertion of this
+module.  If you do, the aggressive placement of automatic
+insertion will cause the global navigation to appear before the Universal
+Navigation.

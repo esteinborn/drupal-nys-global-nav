@@ -370,7 +370,7 @@ function theme_nys_global_nav_header_menu_item($variables) {
 function theme_nys_global_nav_header_menu_item_link($variables) {
   $menu_item = $variables['menu_item'];
   $link_options = (isset($variables['link_options'])) ? $variables['link_options'] : array();
-  $nav_link = (($menu_item['link']['href'] != '<nolink>') ? l($menu_item['link']['title'], $menu_item['link']['href'], $link_options) : ('<a href="#">' . $menu_item['link']['title'] . '</a>'));
+  $nav_link = l($menu_item['link']['title'], $menu_item['link']['href'], $link_options);
   return $nav_link;
 }
 
@@ -448,7 +448,7 @@ function theme_nys_global_nav_footer_menu_column($variables) {
 function theme_nys_global_nav_footer_menu_item_link($variables) {
   $menu_item = $variables['menu_item'];
   $link_options = (isset($variables['link_options'])) ? $variables['link_options'] : array();
-  $nav_link = (($menu_item['link']['href'] != '<nolink>') ? l($menu_item['link']['title'], $menu_item['link']['href'], $link_options) : ($menu_item['link']['title']));
+  $nav_link = l($menu_item['link']['title'], $menu_item['link']['href'], $link_options);
   return $nav_link;
 }
 
