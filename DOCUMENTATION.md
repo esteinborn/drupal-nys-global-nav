@@ -19,9 +19,9 @@ This Drupal module was developed for use by New York State agencies and entities
   for official New York State websites to be compliant per ITS mandate policy
   NYS-S05-001 ([https://www.its.ny.gov/document/state-common-web-banner](https://www.its.ny.gov/document/state-common-web-banner)).
   For use on other sites, please contact New York State Office of Information
-  Services WebNY team at webnysupport@its.ny.gov for guidance. The CSS,
-  JavaScript and fonts that make up the library used for this module can be
-  found at [https://github.com/ny/global-navigation](https://github.com/ny/global-navigation).
+  Services WebNY team at webnysupport@its.ny.gov for guidance and authorization
+  for use. The CSS, JavaScript and fonts that make up the library used for this
+  module can be found at [https://github.com/ny/global-navigation](https://github.com/ny/global-navigation).
   Because that repository contains fonts that are licensed only for use on
   New York State websites, it is not public.  If you need access to the
   repository, contact the WebNY team.
