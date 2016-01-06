@@ -40,11 +40,17 @@ function nys_global_nav_install() {
  * Implements hook_uninstall().
  */
 function nys_global_nav_uninstall() {
-  // Delete the variable2 to clean up.
+  // Delete the variables to clean up.
   variable_del('nys_global_nav_agency_name');
   variable_del('nys_global_nav_agency_color');
   variable_del('nys_global_nav_header_auto');
   variable_del('nys_global_nav_header_menu');
   variable_del('nys_global_nav_footer_auto');
   variable_del('nys_global_nav_footer_menu');
+  // Delete the social media variables too.
+  $social = _nys_global_nav_setup_social_names();
+  foreach ($social as $key => $value) {
+    $social_media_index_name = 'nys_global_nav_social_media_' . check_plain($key);
+    variable_del($social_media_index_name);
+  }
 }
