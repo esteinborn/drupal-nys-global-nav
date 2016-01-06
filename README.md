@@ -59,7 +59,7 @@ This Drupal module was developed for use by New York State agencies and entities
 ## Credits ##
 This project was sponsored by the New York State Office of Information
  Technology Services WebNY department.  Development team included Gregg
- Marshall, Eric Steinborn, Justin Winters, Adam Fasoldt, and Jason Cortes.
+ Marshall, Eric Steinborn, Justin Winter, Adam Fasoldt, and Jason Cortes.
 
 
 ----------
