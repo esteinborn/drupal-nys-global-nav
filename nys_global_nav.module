@@ -363,14 +363,13 @@ function theme_nys_global_nav_header_menu_item($variables) {
  * @param array $variables
  *   An array of variables containing:
  *    - menu_item: The menu item array.
- *    - link_options: An array of link options.
  *
  * @ingroup themeable
  */
 function theme_nys_global_nav_header_menu_item_link($variables) {
   $menu_item = $variables['menu_item'];
   $link_options = (isset($variables['link_options'])) ? $variables['link_options'] : array();
-  $nav_link = l($menu_item['link']['title'], $menu_item['link']['href'], $link_options);
+  $nav_link = l($menu_item['link']['title'], $menu_item['link']['href'], $menu_item['link']['options']);
   return $nav_link;
 }
 
@@ -441,14 +440,13 @@ function theme_nys_global_nav_footer_menu_column($variables) {
  * @param array $variables
  *   An array of variables containing:
  *    - menu_item: The menu item array.
- *    - link_options: An array of link options.
  *
  * @ingroup themeable
  */
 function theme_nys_global_nav_footer_menu_item_link($variables) {
   $menu_item = $variables['menu_item'];
   $link_options = (isset($variables['link_options'])) ? $variables['link_options'] : array();
-  $nav_link = l($menu_item['link']['title'], $menu_item['link']['href'], $link_options);
+  $nav_link = l($menu_item['link']['title'], $menu_item['link']['href'], $menu_item['link']['options']);
   return $nav_link;
 }
 
