@@ -45,6 +45,16 @@ This Drupal module was developed for use by New York State agencies and entities
   module page.
   *Note that if you don't configure the module, you'll only see the mobile
   "hamburger" menu.*
+- **If you are using the Special Menu Items module to create <nolink\> menu
+  entries,** go to Configuration >> System >> Special menu items
+  (/admin/config/system/special_menu_items) and use <a href="#"\> as the HTML
+  for "nolink". You can also reach the configuration page from the Configure
+  link on the module page.
+- Set the *Administer NYS Global Navigation* permission for those roles that
+  should be able to administer the configuration of this module at People >>
+  Permissions (/admin/people/permissions#module-nys\_global_nav).
+  You can also reach the permission from the Permissions link on the
+  module page.
 - It is **strongly** recommended that you install and enable the module
   [Special menu items](https://www.drupal.org/project/special_menu_items)
   (https://www.drupal.org/project/special_menu_items) to facilitate creating
@@ -159,3 +169,15 @@ How to set the z-index CSS in your theme:
 .region-page-top{
 	z-index: 1000;
 }
+
+Top level navigation items cannot have valid links associated with them.
+For desktop and mobile, When you click on a top level nav that contains subnav items, it needs to display the sub navigation.
+when you enter a valid HREF value for a top level nav item, it will navigate to that link instead of popping up the subnavigation.
+ Use this information as a reference for cases when your code needs modification.
+ 
++* **Top level nav items, that have sub nav menus, cannot have a URL associated with them**. In order to hide/show sub navigation items, the decision was made to disallow top level nav items from having a URL associated with them. You have two options for setting your top level nav items:
++ 1. Use an `a` tag with an href set to `#` EX: `<a href="#">I Have Sub Navigation</a>`
++ 2. Use a `span` tag with a class of `nolink` EX: `<span class="nolink">I Have Sub Navigation</span>`
+
+Compatibilities with other modules
+If you use module than require to output a link, go in /admin/config/system/special_menu_items and use <a> as the HTML tag. You can even use <a href="#"> if you need to.

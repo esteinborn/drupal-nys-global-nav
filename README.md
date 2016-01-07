@@ -45,6 +45,16 @@ This Drupal module was developed for use by New York State agencies and entities
   module page.
   *Note that if you don't configure the module, you'll only see the mobile
   "hamburger" menu.*
+- **If you are using the Special Menu Items module to create <nolink\> menu
+  entries,** go to Configuration >> System >> Special menu items
+  (/admin/config/system/special_menu_items) and use <a href="#"\> as the HTML
+  for "nolink". You can also reach the configuration page from the Configure
+  link on the module page.
+- Set the *Administer NYS Global Navigation* permission for those roles that
+  should be able to administer the configuration of this module at People >>
+  Permissions (/admin/people/permissions#module-nys\_global_nav).
+  You can also reach the permission from the Permissions link on the
+  module page.
 - It is **strongly** recommended that you install and enable the module
   [Special menu items](https://www.drupal.org/project/special_menu_items)
   (https://www.drupal.org/project/special_menu_items) to facilitate creating
@@ -57,8 +67,8 @@ This Drupal module was developed for use by New York State agencies and entities
   you should disable the automatic insertion of  
 
 ## Credits ##
-This project was sponsored by the New York State Office of Information
- Technology Services WebNY department.  Development team included Justin 
+This project was sponsored by the [New York State Office of Information
+ Technology Services WebNY department](https://www.drupal.org/webny-new-york-state-office-of-information-technology-services).  Development team included Justin 
  Winter, Eric Steinborn, Adam Fasoldt, Jason Cortes and Gregg Marshall.
 
 ----------
