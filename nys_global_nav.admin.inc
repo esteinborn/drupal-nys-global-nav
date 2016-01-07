@@ -31,17 +31,22 @@ function nys_global_nav_admin_settings() {
  * NYS Global Navigation configuration form validation.
  */
 function nys_global_nav_admin_settings_validate($form, &$form_state) {
-
-  $footer_menu_top_count = _nys_global_nav_menu_count_top($form_state['values']['nys_global_nav_footer_menu']);
-  if (($footer_menu_top_count < 1) ||($footer_menu_top_count > 5) ) {
-    // form_set_error('nys_global_nav_footer_menu', t('The footer menu should have between 1 and 5 top level menu items.'));
-    drupal_set_message('The footer menu should have between 1 and 5 top level menu items.  Your menu has ' . $footer_menu_top_count . '.', 'warning');
+  // Check if Special Menu Items is configured correctly.
+  if (module_exists('special_menu_items') && (variable_get('special_menu_items_nolink_tag', '<span>') !== '<a href="#">')) {
+    drupal_set_message(htmlspecialchars('Special Menu Items module needs to have its <nolink> HTML set to <a href="#"> ') . l('Configure now', '/admin/config/system/special_menu_items'), 'warning');
   }
-
+  // Check the number of footer menu items.
   $header_menu_top_count = _nys_global_nav_menu_count_top($form_state['values']['nys_global_nav_header_menu']);
   if (($header_menu_top_count < 5) ||($header_menu_top_count > 7) ) {
     // form_set_error('nys_global_nav_header_menu', t('The header menu should have between 1 and 5 top level menu items.'));
     drupal_set_message('The header menu should have between 5 and 7 top level menu items.  Your menu has ' . $header_menu_top_count . '.', 'warning');
+  }
+
+  // Check the number of footer menu items.
+  $footer_menu_top_count = _nys_global_nav_menu_count_top($form_state['values']['nys_global_nav_footer_menu']);
+  if (($footer_menu_top_count < 1) ||($footer_menu_top_count > 5) ) {
+    // form_set_error('nys_global_nav_footer_menu', t('The footer menu should have between 1 and 5 top level menu items.'));
+    drupal_set_message('The footer menu should have between 1 and 5 top level menu items.  Your menu has ' . $footer_menu_top_count . '.', 'warning');
   }
 
 }
