@@ -6,6 +6,46 @@
  */
 
 /**
+ * Implements hook_requirements().
+ */
+function nys_global_nav_requirements($phase) {
+  $requirements = array();
+
+  if ($phase == 'runtime') {
+    $t = get_t();
+    $library = libraries_detect('nys_global_nav');
+    $error_type = isset($library['error']) ? drupal_ucfirst($library['error']) : '';
+    $error_message = isset($library['error message']) ? $library['error message'] : '';
+
+    if (empty($library['installed'])) {
+      $requirements['nys_global_nav_library'] = array(
+        'title' => $t('Global Navigation library'),
+        'value' => $t('@e: At least @a', array('@e' => $error_type, '@a' => NYS_GLOBAL_NAV_MIN_PLUGIN_VERSION)),
+        'severity' => REQUIREMENT_ERROR,
+        'description' => $t('!error You need to download the !nys_global_nav, extract the archive, rename the directory to nys_global_nav and place the nys_global_nav directory in the %path directory on your server.', array('!error' => $error_message, '!nys_global_nav' => l($t('Global Navigation library'), $library['download url']), '%path' => 'sites/all/libraries')),
+      );
+    }
+    elseif (version_compare($library['version'], NYS_GLOBAL_NAV_MIN_PLUGIN_VERSION, '>=')) {
+      $requirements['nys_global_nav_library'] = array(
+        'title' => $t('Global Navigation library'),
+        'severity' => REQUIREMENT_OK,
+        'value' => $library['version'],
+      );
+    }
+    else {
+      $requirements['nys_global_nav_library'] = array(
+        'title' => $t('Global Navigation library'),
+        'value' => $t('At least @a', array('@a' => NYS_GLOBAL_NAV_MIN_PLUGIN_VERSION)),
+        'severity' => REQUIREMENT_ERROR,
+        'description' => $t('You have version @version of the Global Navigation library.  You need to download a later version of the !nys_global_nav and replace the old version located in the %path directory on your server.', array('!nys_global_nav' => l($t('Global Navigation library'), $library['download url']), '%path' => $library['library path'], '@version' => $library['version'])),
+      );
+    }
+  }
+
+  return $requirements;
+}
+
+/**
  * Implements hook_install().
  *
  * Add 2 Drupal variables, nys_global_nav_header_auto &
@@ -34,6 +74,9 @@ function nys_global_nav_install() {
     ->condition('type', 'module', '=')
     ->execute();
 
+  $library = libraries_detect('nys_global_nav');
+  $t = get_t();
+  drupal_set_message($t('NYS Global Navigation installed.  Make sure you download the !nys_global_nav, extract the archive, rename the directory to nys_global_nav and place the nys_global_nav directory in the %path directory on your server.', array('!nys_global_nav' => l($t('Global Navigation library'), $library['download url']), '%path' => 'sites/all/libraries')));
 }
 
 /**
@@ -48,6 +91,9 @@ function nys_global_nav_uninstall() {
   variable_del('nys_global_nav_footer_auto');
   variable_del('nys_global_nav_footer_menu');
   // Delete the social media variables too.
+  if (!function_exists('_nys_global_nav_setup_social_names')) {
+    include_once 'nys_global_nav.module';
+  }
   $social = _nys_global_nav_setup_social_names();
   foreach ($social as $key => $value) {
     $social_media_index_name = 'nys_global_nav_social_media_' . check_plain($key);

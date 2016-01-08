@@ -10,6 +10,11 @@
  */
 
 /**
+ * The minimum version of the New York State Global Navigation library.
+ */
+define('NYS_GLOBAL_NAV_MIN_PLUGIN_VERSION', '1.0.0');
+
+/**
  * Implements hook_menu().
  */
 function nys_global_nav_menu() {
@@ -215,6 +220,11 @@ function nys_global_nav_libraries_info() {
     'name' => 'New York State Global Navigation library',
     'vendor url' => 'http://its.ny.gov/webny',
     'download url' => 'https://github.com/ny/global-navigation',
+    'version arguments' => array(
+      'file' => 'source/js/nys-global-nav-header.js',
+      'pattern' => '@(?i:nys-global-nav)\sv?([0-9\.a-z]+)@',
+      'lines' => 5,
+    ),
     'path' => 'source',
     'files' => array(
       // 'js' and 'css' follow the syntax of hook_library(), but file paths are
